@@ -4,13 +4,17 @@
   "description": "JS library for parsing and reading BSP (Binary Space Partition) structures in Quake-based game engines",
   "scripts": {
     "dev": "tsc --watch",
-    "prebuild": "npm run lint",
+    "prebuild": "npm run lint && npm run generate-index",
     "build": "tsc",
     "lint": "eslint src/",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate-index": "node generateIndex.js",
+    "prepare": "npm run clean && npm run build",
+    "clean": "rimraf dist"
   },
   "author": "vinhui",
   "license": "MIT",
+  "repository": "https://github.com/vinhui/LibBSP-js",
   "keywords": [
     "bsp",
     "3d",
@@ -20,7 +24,13 @@
     "@eslint/js": "^9.13.0",
     "@types/eslint__js": "^8.42.3",
     "eslint": "^9.13.0",
+    "rimraf": "^6.0.1",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.12.2"
-  }
+  },
+  "files": [
+    "dist/"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts"
 }
