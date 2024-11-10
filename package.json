@@ -1,6 +1,6 @@
 {
   "name": "libbsp-js",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "JS library for parsing and reading BSP (Binary Space Partition) structures in Quake-based game engines",
   "scripts": {
     "dev": "tsc --watch",
