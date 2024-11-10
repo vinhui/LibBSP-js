@@ -46,7 +46,7 @@ export class File {
             return true
         }
 
-        const response = await fetch(FakeFileSystem.baseUrl + this.originalPath)
+        const response = await fetch(FakeFileSystem.baseUrl + this.originalPath.replace('#', '%23'))
         if (!response.ok) {
             this.failedToDownload = true
             return false
