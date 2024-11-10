@@ -114,7 +114,8 @@ export class FakeFileSystem {
         startsWithPath = startsWithPath.toLowerCase()
 
         let items: File[] = []
-        for (const [path, file] of this.fileData.entries()) {
+        const entries = this.fileData.entries()
+        for (const [path, file] of entries) {
             if (path.startsWith(startsWithPath)) {
                 if (!regex) {
                     items.push(file)
@@ -142,7 +143,7 @@ export class FakeFileSystem {
         this.fileData.clear()
     }
 
-    public static async DownloadFile(file: string | File): Promise<boolean> {
+    public static async DownloadFile(file: string | File): Promise<File | null> {
         if (!file) {
             throw new Error('ArgumentNullException')
         }
@@ -156,7 +157,7 @@ export class FakeFileSystem {
             file = file.toLowerCase()
 
             if (!this.fileData.has(file)) {
-                return false
+                return null
             }
 
             item = this.fileData.get(file)!
@@ -165,18 +166,18 @@ export class FakeFileSystem {
         }
 
         if (item.isLoaded) {
-            return true
+            return item
         }
 
         await item.download()
-        return !item.failedToDownload
+        return item.failedToDownload ? null : item
     }
 
-    public static async DownloadFiles(paths: (string | File)[]): Promise<void> {
-        const promises: Promise<boolean>[] = []
+    public static async DownloadFiles(paths: (string | File)[]): Promise<(File | null)[]> {
+        const promises: Promise<File | null>[] = []
         for (const path of paths) {
             promises.push(this.DownloadFile(path))
         }
-        await Promise.all(promises)
+        return Promise.all(promises)
     }
 }
