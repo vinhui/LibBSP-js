@@ -10,7 +10,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "generate-index": "node generateIndex.js",
     "prepare": "npm run clean && npm run build",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "prepublish": "npm run build"
   },
   "author": "vinhui",
   "license": "MIT",
