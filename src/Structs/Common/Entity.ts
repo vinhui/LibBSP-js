@@ -3,7 +3,7 @@ import {BSP, LumpInfo, MapType} from '../BSP/BSP'
 import {StringExtensions} from '../../Extensions/StringExtensions'
 import {Vector3, Vector4} from '../../Util/Vector'
 import {ILumpObject, LumpObjDataCtor} from './ILumpObject'
-import {float, int, numberToStringUS, parseFloatUS, uint} from '../../Util/number'
+import {float, int, uint} from '../../Util/number'
 import {Entities} from './Lumps/Entities'
 import {MAPBrush} from '../MAP/MAPBrush'
 
@@ -21,12 +21,10 @@ export class EntityConnection {
     public toString(mapType?: MapType): string {
         mapType = mapType ?? MapType.Undefined
 
-        const formattedDelay = numberToStringUS(this.delay)
-
         if (mapType === MapType.DMoMaM) {
-            return `"${this.name}" "${this.target},${this.action},${this.param},${formattedDelay},${this.fireOnce},${this.unknown0},${this.unknown1}"`
+            return `"${this.name}" "${this.target},${this.action},${this.param},${this.delay},${this.fireOnce},${this.unknown0},${this.unknown1}"`
         } else {
-            return `"${this.name}" "${this.target},${this.action},${this.param},${formattedDelay},${this.fireOnce}"`
+            return `"${this.name}" "${this.target},${this.action},${this.param},${this.delay},${this.fireOnce}"`
         }
     }
 }
@@ -75,7 +73,7 @@ export class Entity extends ILumpObject<Entity> {
     }
 
     public set origin(val: Vector3) {
-        this._map.set('origin', `${numberToStringUS(val.x)} ${numberToStringUS(val.y)} ${numberToStringUS(val.z)}`)
+        this._map.set('origin', `${val.x} ${val.y} ${val.z}`)
     }
 
     public get angles(): Vector3 {
@@ -84,7 +82,7 @@ export class Entity extends ILumpObject<Entity> {
     }
 
     public set angles(val: Vector3) {
-        this._map.set('angles', `${numberToStringUS(val.x)} ${numberToStringUS(val.y)} ${numberToStringUS(val.z)}`)
+        this._map.set('angles', `${val.x} ${val.y} ${val.z}`)
     }
 
     public get name(): string {
@@ -336,7 +334,7 @@ export class Entity extends ILumpObject<Entity> {
                         ec.target = connection[0]!
                         ec.action = connection[1]!
                         ec.param = connection[2]!
-                        ec.delay = parseFloatUS(connection[3])
+                        ec.delay = parseFloat(connection[3]!)
                         ec.fireOnce = Number.parseInt(connection[4]!, 10)
                         ec.unknown0 = connection.length > 5 ? connection[5]! : ''
                         ec.unknown1 = connection.length > 6 ? connection[6]! : ''
@@ -388,14 +386,15 @@ export class Entity extends ILumpObject<Entity> {
     }
 
     public getFloat(key: string, failDefault?: float): float {
-        try {
-            return parseFloatUS(this.get(key))
-        } catch (e) {
+        const val = this.get(key)
+        if (typeof val !== 'string') {
             if (failDefault) {
                 return failDefault
             } else {
-                throw e
+                throw new Error('Value is undefined')
             }
+        } else {
+            return parseFloat(val)
         }
     }
 
@@ -427,7 +426,7 @@ export class Entity extends ILumpObject<Entity> {
             const nums = val.split(' ')
             for (let i = 0; i < results.length && i < nums.length; i++) {
                 try {
-                    results[i] = parseFloatUS(nums[i])
+                    results[i] = parseFloat(nums[i]!)
                 } catch (_) {
                     results[i] = 0
                 }

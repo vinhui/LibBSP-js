@@ -1,6 +1,6 @@
 import {Vector3} from '../../Util/Vector'
 import {StringExtensions} from '../../Extensions/StringExtensions'
-import {float, int, parseFloatUS} from '../../Util/number'
+import {float, int} from '../../Util/number'
 import {generate2dArray} from '../../Util/array'
 
 export class MAPDisplacement {
@@ -58,7 +58,7 @@ export class MAPDisplacement {
                     }
                     case 'startposition': {
                         const point = tokens[1]!.substring(1, tokens[1]!.length - 2).split(' ').filter(x => x)
-                        this.start = new Vector3(parseFloatUS(point[0]!), parseFloatUS(point[1]!), parseFloatUS(point[2]!))
+                        this.start = new Vector3(parseFloat(point[0]!), parseFloat(point[1]!), parseFloat(point[2]!))
                         break
                     }
                 }
@@ -90,9 +90,9 @@ export class MAPDisplacement {
 
         for (const i of normalsTokens.keys()) {
             for (let j = 0; j < normalsTokens.get(i)!.length / 3; j++) {
-                this.normals[i]![j] = new Vector3(parseFloatUS(normalsTokens.get(i)![j * 3]), parseFloatUS(normalsTokens.get(i)![(j * 3) + 1]), parseFloatUS(normalsTokens.get(i)![(j * 3) + 2]))
-                this.distances[i]![j] = parseFloatUS(distancesTokens.get(i)![j])
-                this.alphas[i]![j] = parseFloatUS(alphasTokens.get(i)![j])
+                this.normals[i]![j] = new Vector3(parseFloat(normalsTokens.get(i)![j * 3]!), parseFloat(normalsTokens.get(i)![(j * 3) + 1]!), parseFloat(normalsTokens.get(i)![(j * 3) + 2]!))
+                this.distances[i]![j] = parseFloat(distancesTokens.get(i)![j]!)
+                this.alphas[i]![j] = parseFloat(alphasTokens.get(i)![j]!)
             }
         }
     }

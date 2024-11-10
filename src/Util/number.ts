@@ -16,27 +16,6 @@ export type float = number
 export type byte = UInt8
 export type sbyte = Int8
 
-const formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits: 10})
-
-export function numberToStringUS(n: number): string {
-    return formatter.format(n)
-}
-
-export function parseFloatUS(value?: string): number {
-    if (!value) return 0
-    // Convert the string to a number. Ensure the locale uses '.' as the decimal separator.
-    const formattedValue = formatter.formatToParts(12345.67)
-        .map(part => part.type === 'decimal' ? '.' : part.value)
-        .join('')
-
-    // Replace the locale-specific decimal separator with '.' for parsing
-    const decimalSeparator = formattedValue.charAt(1) // Get the decimal separator
-    const normalizedValue = value.replace(decimalSeparator, '.')
-
-    // Parse and return the float value
-    return parseFloat(normalizedValue)
-}
-
 export function trimFormatNumber(value: number, decimalPlaces: number, beforeDecimalPlaces: number = 4): string {
     let formatted = value.toFixed(decimalPlaces)
     formatted = formatted.replace(/(\.\d*?)0+$/, '$1')

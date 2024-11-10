@@ -1,5 +1,5 @@
 import {Vector3, Vector4} from '../../Util/Vector'
-import {float, int, parseFloatUS} from '../../Util/number'
+import {float, int} from '../../Util/number'
 import {generate2dArray} from '../../Util/array'
 
 export class MAPTerrainEF2 {
@@ -32,25 +32,25 @@ export class MAPTerrainEF2 {
                     switch (line[0]) {
                         case 'TEX(': {
                             this.texture = line[1]!
-                            this.textureShiftS = parseFloatUS(line[2]!)
-                            this.textureShiftT = parseFloatUS(line[3]!)
-                            this.texRot = parseFloatUS(line[4]!)
-                            this.texScaleX = parseFloatUS(line[5]!)
-                            this.texScaleY = parseFloatUS(line[6]!)
+                            this.textureShiftS = parseFloat(line[2]!)
+                            this.textureShiftT = parseFloat(line[3]!)
+                            this.texRot = parseFloat(line[4]!)
+                            this.texScaleX = parseFloat(line[5]!)
+                            this.texScaleY = parseFloat(line[6]!)
                             this.flags = parseInt(line[8]!, 10)
                             break
                         }
                         case 'TD(': {
                             this.sideLength = parseInt(line[1]!, 10)
-                            this.start = new Vector3(parseFloatUS(line[2]!), parseFloatUS(line[3]!), parseFloatUS(line[4]!))
+                            this.start = new Vector3(parseFloat(line[2]!), parseFloat(line[3]!), parseFloat(line[4]!))
                             break
                         }
                         case 'IF(': {
-                            this.IF = new Vector4(parseFloatUS(line[1]!), parseFloatUS(line[2]!), parseFloatUS(line[3]!), parseFloatUS(line[4]!))
+                            this.IF = new Vector4(parseFloat(line[1]!), parseFloat(line[2]!), parseFloat(line[3]!), parseFloat(line[4]!))
                             break
                         }
                         case 'LF(': {
-                            this.LF = new Vector4(parseFloatUS(line[1]!), parseFloatUS(line[2]!), parseFloatUS(line[3]!), parseFloatUS(line[4]!))
+                            this.LF = new Vector4(parseFloat(line[1]!), parseFloat(line[2]!), parseFloat(line[3]!), parseFloat(line[4]!))
                             break
                         }
                         case 'V(': {
@@ -62,7 +62,7 @@ export class MAPTerrainEF2 {
                             this.heightMap = generate2dArray(this.side, this.side, 0)
                             for (let j = 0; j < this.side; ++j) {
                                 for (let k = 0; k < this.side; ++k) {
-                                    this.heightMap[j]![k] = parseFloatUS(line[k]!)
+                                    this.heightMap[j]![k] = parseFloat(line[k]!)
                                 }
                                 ++i
                                 line = lines[i]!.split(' ').filter(x => x)
@@ -78,7 +78,7 @@ export class MAPTerrainEF2 {
                             this.alphaMap = generate2dArray(this.side, this.side, 0)
                             for (let j = 0; j < this.side; ++j) {
                                 for (let k = 0; k < this.side; ++k) {
-                                    this.alphaMap[j]![k] = parseFloatUS(line[k]!)
+                                    this.alphaMap[j]![k] = parseFloat(line[k]!)
                                 }
                                 ++i
                                 line = lines[i]!.split(' ').filter(x => x)
